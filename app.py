@@ -57,6 +57,9 @@ def decode():
     if request.method == "POST":
         if 'file' not in request.files:
             return "No cover file"
+        if file.filename == "":
+            flash("No file uploaded")
+            return redirect(url_for('decode'))
         file = request.files['file']
         filename = file.filename
         password = request.form['password']
