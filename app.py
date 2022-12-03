@@ -61,16 +61,15 @@ def decode():
         filename = file.filename
         password = request.form['password']
         id = str(uuid.uuid4())
-        os.chdir(EXTRACT)
         os.mkdir(id)
-        temp_path = os.path.join(EXTRACT,id)
-        os.chdir(temp_path)
+        temp_path = os.path.join(os.getcwd(),id)
         file.save(os.path.join(temp_path,filename))
-        subprocess.run(['steghide','extract','-sf',filename,"-p",password])
+        new1 = str(uuid.uuid4())+".txt"
+        subprocess.run(['steghide','extract','-sf',os.path.join(temp_path,filename),"-xf",new1,"-p",password])
         if glob.glob("*.txt") == []:
             flash('Invalid Password')
             return redirect(url_for('decode'))
-        return send_from_directory(temp_path,glob.glob("*.txt")[0],as_attachment=True)
+        return send_from_directory(os.getcwd(),new1,as_attachment=True)
     return render_template('decode.html')
         
 
