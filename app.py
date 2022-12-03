@@ -66,7 +66,7 @@ def decode():
         file.save(os.path.join(temp_path,filename))
         new1 = str(uuid.uuid4())+".txt"
         subprocess.run(['steghide','extract','-sf',os.path.join(temp_path,filename),"-xf",new1,"-p",password])
-        if glob.glob("*.txt") == []:
+        if not os.path.exists(os.path.join(os.getcwd(),new1)):
             flash('Invalid Password')
             return redirect(url_for('decode'))
         return send_from_directory(os.getcwd(),new1,as_attachment=True)
