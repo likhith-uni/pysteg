@@ -46,9 +46,9 @@ def index():
             to_hide.save(os.path.join(TEXTS,id+".txt"))
             ############################
             #Hide file
-            os.chdir(os.path.join(os.getcwd(), "output"))
-            subprocess.run(['steghide','embed','-ef',"../uploads/txt/"+id+".txt","-cf","../uploads/img/"+filename,"-sf",filename,"-p",password])
-            return send_from_directory(OUTPUT,filename,as_attachment=True)
+            new = str(uuid.uuid4())+"."+ext
+            subprocess.run(['steghide','embed','-ef',TEXTS+"/"+id+".txt","-cf",IMAGES+"/"+filename,"-sf",new,"-p",password])
+            return send_from_directory(os.getcwd(),new,as_attachment=True)
     return render_template('index.html')
 
 
