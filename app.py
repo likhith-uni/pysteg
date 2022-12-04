@@ -36,7 +36,7 @@ def index():
         password = request.form['password']
         if file.filename == "" or to_hide.filename == "":
             return redirect(url_for('index'))
-        if file and allowed_file(file.filename) and to_hide:
+        if True:
             ext = file.filename.split('.')[-1]
             id = str(uuid.uuid4())
             filename = id+"."+ext
