@@ -71,7 +71,23 @@ def decode():
             return redirect(url_for('decode'))
         return send_from_directory(os.getcwd(),new1,as_attachment=True)
     return render_template('decode.html')
-        
+
+
+@app.route("/info",methods=['POST','GET'])
+def info():
+    if request.method == "POST":
+        file = request.files['file']
+        password = request.form['password']
+        ext = file.filename.split('.')[-1]
+        id = str(uuid.uuid4())
+        filename = id+"."+ext
+        file.save(os.path.join(IMAGES,filename))
+        result = subprocess.run(['steghide','info',os.path.join(IMAGES,filename),'-p',password],capture_output=True, text=True)
+        flash(result.stdout)
+        return render_template('info.html')
+    return render_template('info.html')
+
+
 
 if __name__ == "__main__":
     app.run(
