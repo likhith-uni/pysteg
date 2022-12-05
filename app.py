@@ -83,7 +83,12 @@ def info():
         filename = id+"."+ext
         file.save(os.path.join(IMAGES,filename))
         result = subprocess.run(['steghide','info',os.path.join(IMAGES,filename),'-p',password],capture_output=True, text=True)
-        flash(result.stdout)
+        temp = result.stdout
+        try:
+            temp = result.stdout.split("format:")[-1]
+        except:
+            pass
+        flash(temp)
         return render_template('info.html')
     return render_template('info.html')
 
